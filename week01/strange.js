@@ -2,8 +2,6 @@
 'use strict';
 
 const type = typeof NaN;
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 console.log('NaN is a ' + type); // number
 console.log(`NaN === NaN? ${NaN === NaN}\n`); // true -> false
 
@@ -27,7 +25,6 @@ console.log(`3 > 2 > 1? ${3 > 2 > 1}\n`); // ??? false -> false
 console.log(`0.2 + 0.1 === 0.3? ${0.2 + 0.1 === 0.3}\n`); // ??? false -> false
 
 console.log('b' + 'a' + (+ 'a') + 'a'); // baNaNa
-=======
 console.log('NaN is a ' + type); // number 
 console.log(`NaN === NaN? ${NaN === NaN}\n`); // false (NaN non è uguale a niente, neanche a se stesso)
 
@@ -51,8 +48,6 @@ console.log(`3 > 2 > 1? ${3 > 2 > 1}\n`); // false (3>2=true, true=1>1 = false)
 console.log(`0.2 + 0.1 === 0.3? ${0.2 + 0.1 === 0.3}\n`); // false
 
 console.log('b' + 'a' + (+ 'a') + 'a'); // baNaNa (+ converte qualcosa in numero, però 'a' non può essere convertito in numero)
->>>>>>> Stashed changes
-=======
 console.log('NaN is a ' + type); // number 
 console.log(`NaN === NaN? ${NaN === NaN}\n`); // false (NaN non è uguale a niente, neanche a se stesso)
 
@@ -75,5 +70,3 @@ console.log(`3 > 2 > 1? ${3 > 2 > 1}\n`); // false (3>2=true, true=1>1 = false)
 
 console.log(`0.2 + 0.1 === 0.3? ${0.2 + 0.1 === 0.3}\n`); // false
 
-console.log('b' + 'a' + (+ 'a') + 'a'); // baNaNa (+ converte qualcosa in numero, però 'a' non può essere convertito in numero)
->>>>>>> Stashed changes
