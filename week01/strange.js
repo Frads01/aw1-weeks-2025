@@ -25,7 +25,6 @@ console.log(`3 > 2 > 1? ${3 > 2 > 1}\n`); // ??? false -> false
 
 console.log(`0.2 + 0.1 === 0.3? ${0.2 + 0.1 === 0.3}\n`); // ??? false -> false
 
-console.log('b' + 'a' + (+ 'a') + 'a'); // baNaNaconsole.log('b' + 'a' + (+ 'a') + 'a'); // baNaNa
 console.log('b' + 'a' + (+ 'a') + 'a'); // baNaNa
 =======
 console.log('NaN is a ' + type); // number 
