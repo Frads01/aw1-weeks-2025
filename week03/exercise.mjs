@@ -36,19 +36,25 @@ function Question(id, text, email, userId, date) {
 
   // metodo per aggiungere una nuova risposta di un autore esistente alla Question instanziata (4)
   this.addAnswer = (answer) => {
-    
+    return new Promise((resolve, reject) => {
+      const sql = "INSERT INTO answer(text, authorId, date, score, questionId) VALUES (?, ?, ?, ?, ?)";
+      db.run(sql, [answer.text, answer.userId, answer.date.toISOString(), answer.score, this.id], function (err) {
+        if (err)
+          reject(err);
+        else
+          resolve(this.lastID);
+      });
+    });
   }
 
   // metodo per votare una risposta esistente, con up = +1 e down = -1 (5)
   this.voteAnswer = (answerId, value) => {
     return new Promise((resolve, reject) => {
-
-      const sql = "UPDATE answer SET score = score + ? WHERE id = ?";
-      db.run(sql, [value, answerId], function (err) {
-        if (err) 
-          reject(err);
-        else 
-          resolve(this.changes);
+      const sql = "UPDATE answer SET score = score + ? WHERE id= ?";
+      const delta = value === "up" ? 1 : -1;
+      db.run(sql, [delta, answerId], function(err) {
+        if (err) reject(err);
+        else resolve(this.changes);
       });
     });
   }
@@ -108,13 +114,22 @@ function QuestionList() {
 
 // funzione per il test
 async function main() {
-  const questionList = new QuestionList();
-  const question = await questionList.getQuestion(1)
-  console.log(question);
+  const ql = new QuestionList();
 
-  console.log(await question.getAnswers());
+  const firstQuestion = await ql.getQuestion(1);
+  console.log(firstQuestion);
+  
+  console.log(await firstQuestion.getAnswers());
+  const newAnswerId = await firstQuestion.addAnswer(new Answer(undefined, "test", "luigi.derussis@polito.it", 1, dayjs()));
+  console.log("ID OF THE NEW ANSWER: " + newAnswerId);
+  console.log("# OF CHANGES DUE TO THE VOTE: " + await firstQuestion.voteAnswer(newAnswerId, "up"));
+  console.log(await firstQuestion.getAnswers());
 
-  return;
+  const newQuestionId = await ql.addQuestion(new Question(undefined, "Is 1 bigger than 10?", "luigi.derussis@polito.it", 1, dayjs()));
+  const newQuestion = await ql.getQuestion(newQuestionId);
+  console.log("NEWLY ADDED QUESTION: " + newQuestion.text);
+  console.log(await newQuestion.getAnswers());
+
 }
 
 main();
