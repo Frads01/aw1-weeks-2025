@@ -20,7 +20,7 @@ function App() {
       <NavHeader questionNum={question.id} />
       <Container fluid className="mt-3">
         <QuestionDescription question={question} />
-        <Answers answers={answers} setAnswers={setAnswers} />
+        <Answers answers={answers} />
       </Container>
     </>
   )
