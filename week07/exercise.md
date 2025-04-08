@@ -10,7 +10,7 @@ Use the defined state and decide where to put the function to increase the score
 
 ## Add a new answer
 
-Include a form on the question page to add a new answer. The form will appear under the answers' table and use _controlled input components_. 
+Include a form on the question page to add a new answer. The form will appear under the answers' table; choose whether to use _controlled input components_ or _useActionState_. 
 
 First, start defining the suitable components to show the form *without* handling the insertion of a new answer in the table. Then, *handle the insertion* of a new answer in the table. Use the defined state to perform this operation.
 
