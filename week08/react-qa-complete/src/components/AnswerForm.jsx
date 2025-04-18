@@ -1,24 +1,40 @@
 import { useActionState } from "react";
-import { Form, Button, Alert } from "react-bootstrap";
+import { Form, Button, Alert, Row, Col } from "react-bootstrap";
 import dayjs from "dayjs";
-import { Link } from "react-router";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useLocation, Link } from "react-router";
 
 export function EditAnswerForm(props) {
-  // 1. metodo con useParams
+  // 1. metodo con i useParams
   const params = useParams();
-  const answerId = params.answerId;
+  const aId = params.answerId;
 
-  const answer = props.answers.filter(ans => ans.id == answerId)[0];
+  // trovo la risposta da modificare
+  const answer = props.answers.filter(ans => ans.id == aId)[0];
 
-  return(
-    <AnswerForm answer={answer} editAnswer={props.editAnswer} />
-  );
+  /*
+  // 2. metodo con useLocation
+  const location = useLocation();
+  const answer = location.state;
+  // back to dayjs
+  answer.date = dayjs(answer.date);
+  */
+ 
+  if(answer)
+    return <AnswerForm answer={answer} editAnswer={props.editAnswer} />
+  else {
+    return (
+      <Row>
+        <Col as="p" className="lead">Impossible to edit an non-existent answer!</Col>
+      </Row> 
+    );
+  }
+  
 }
 
 export function AnswerForm(props) {
-  const { questionId } = useParams();
+
   const navigate = useNavigate();
+  const { questionId } = useParams();
   
   const initialState = {
     text: props.answer?.text,
@@ -49,6 +65,9 @@ export function AnswerForm(props) {
 
   return(
     <>
+      <Row>
+        <Col as="p" className="mt-3"><strong>Your Answer:</strong></Col>
+      </Row>
       { state.error && <Alert variant="secondary">{state.error}</Alert> }
       <Form action={formAction}>
         <Form.Group className="mb-3">

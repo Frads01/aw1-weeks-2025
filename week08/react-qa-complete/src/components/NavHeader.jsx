@@ -1,10 +1,11 @@
 import { Container, Navbar } from 'react-bootstrap';
+import { Link } from "react-router";
 
-function NavHeader (props) {
+function NavHeader() {
   return(
     <Navbar bg='primary' data-bs-theme='dark'>
       <Container fluid>
-        <Navbar.Brand>HeapOverrun</Navbar.Brand>
+      <Link to="/" className="navbar-brand">HeapOverrun</Link>
       </Container>
     </Navbar>
   );

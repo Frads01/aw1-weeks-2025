@@ -2,12 +2,13 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { useState } from "react";
 
 import { Question, Answer } from "./models/QAModels.mjs";
+import DefaultLayout from "./components/DefaultLayout";
 import QuestionDescription from "./components/QuestionDescription";
 import Answers from "./components/Answers";
-import { AnswerForm, EditAnswerForm } from "./components/AnswerForm";
-import { Routes, Route } from "react-router";
-import DefaultLayout from "./components/DefaultLayout";
 import Questions from "./components/Questions";
+import { Routes, Route } from "react-router";
+import { AnswerForm, EditAnswerForm } from "./components/AnswerForm";
+import NotFound from "./components/NotFound";
 
 const fakeQuestion = new Question(1, "Is JavaScript better than Python?", "luigi.derussis@polito.it", 1, "2025-02-28");
 fakeQuestion.init();
@@ -72,14 +73,16 @@ function App() {
 
   return (
     <Routes>
-      <Route element={<DefaultLayout />}>
-        <Route path="/" element={<Questions questions={questions}/>} />
-        <Route path="/questions/:questionId" element={<QuestionDescription questions={questions} />} >
-          <Route index element={<Answers answers={answers} voteUp={voteUp} addAnswer={addAnswer} editAnswer={updateAnswer} deleteAnswer={deleteAnswer} />} />
-          <Route path="answers/new" element={<AnswerForm addAnswer={addAnswer}/>}/>
-          <Route path="answers/:answerId/edit" element={<EditAnswerForm editAnswer={updateAnswer} answers={answers} />}/>
+      <Route element={ <DefaultLayout /> } >
+        <Route path="/" element={ <Questions questions={questions}/> } />
+        <Route path="/questions/:questionId" element={ <QuestionDescription questions={questions} /> } >
+          <Route index element={ <Answers answers={answers} voteUp={voteUp} addAnswer={addAnswer} editAnswer={updateAnswer} deleteAnswer={deleteAnswer} /> } />
+          <Route path="answers/new" element={ <AnswerForm addAnswer={addAnswer} /> } />
+          <Route path="answers/:answerId/edit" element={ <EditAnswerForm answers={answers} editAnswer={updateAnswer} /> } />
+          {/* con location.state
+          <Route path="answers/:answerId/edit" element={ <EditAnswerForm editAnswer={updateAnswer} /> } /> */}
         </Route>
-        <Route path="*" element={<p>Pagina non trovata</p>} />
+        <Route path="*" element={ <NotFound /> } />
       </Route>
     </Routes>
   )
