@@ -13,7 +13,6 @@ function Answers (props) {
     <Row>
       <Col lg={10} className="mx-auto">
         <AnswerTable answers={props.answers} voteUp={props.voteUp} deleteAnswer={props.deleteAnswer} />
-
         <Link className="btn btn-primary" to="answers/new">Add</Link>
       </Col>
     </Row>
@@ -72,9 +71,10 @@ function AnswerData(props) {
 function AnswerAction(props) {
   return(
     <td>
-      <Button variant="warning" onClick={() => props.voteUp(props.answer.id)}><i className="bi bi-arrow-up" /></Button> 
-      <Link className="mx-1 btn btn-primary" to={`answers/${props.answer.id}/edit`} ><i className="bi bi-pencil-square" /></Link>
-      <Button variant="danger"><i className="bi bi-trash" onClick={() => props.deleteAnswer(props.answer.id)} /></Button>
+      <Button variant="warning" onClick={() => props.voteUp(props.answer.id)}><i className="bi bi-arrow-up" /></Button>
+      <Link className="btn btn-primary mx-1" to={`answers/${props.answer.id}/edit`}><i className="bi bi-pencil-square" /></Link>
+      {/* con location.state: <Link className="btn btn-primary mx-1" to={`answers/${props.answer.id}/edit`} state={props.answer.serialize()} ><i className="bi bi-pencil-square" /></Link> */}
+      <Button variant="danger" onClick={() => props.deleteAnswer(props.answer.id)}><i className="bi bi-trash" /></Button>
     </td>
   );
 }
