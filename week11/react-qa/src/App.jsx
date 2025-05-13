@@ -1,7 +1,7 @@
 import "bootstrap/dist/css/bootstrap.min.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import { Question, Answer } from "./models/QAModels.mjs";
+import { Answer } from "./models/QAModels.mjs";
 import DefaultLayout from "./components/DefaultLayout";
 import QuestionDescription from "./components/QuestionDescription";
 import Answers from "./components/Answers";
@@ -9,25 +9,18 @@ import Questions from "./components/Questions";
 import { Routes, Route } from "react-router";
 import { AnswerForm, EditAnswerForm } from "./components/AnswerForm";
 import NotFound from "./components/NotFound";
-
-const fakeQuestion = new Question(1, "Is JavaScript better than Python?", "luigi.derussis@polito.it", 1, "2025-02-28");
-fakeQuestion.init();
-const fakeAnswers = fakeQuestion.getAnswers();
+import API from "./API/API.mjs";
 
 function App() {
-  const [questions, setQuestions] = useState([fakeQuestion]);
-  const [answers, setAnswers] = useState(fakeAnswers);
+  const [questions, setQuestions] = useState([]);
 
-  const voteUp = (answerId) => {
-    setAnswers(oldAnswers => {
-      return oldAnswers.map(ans => {
-        if(ans.id === answerId)
-          return new Answer(ans.id, ans.text, ans.email, ans.userId, ans.date, ans.score +1);
-        else
-          return ans;
-      });
-    });
-  }
+  useEffect(() => {
+    const getQuestions = async () => {
+      const questions = await API.getQuestions();
+      setQuestions(questions);
+    }
+    getQuestions();
+  }, []);
 
   const addAnswer = (answer) => {
     setAnswers(oldAnswers => {
@@ -49,11 +42,6 @@ function App() {
     });
   }
 
-  const deleteAnswer = (answerId) => {
-    setAnswers(oldAnswers => {
-      return oldAnswers.filter((answer) => answer.id !== answerId); 
-    });
-  }
 
   {/* ROUTES
     
@@ -76,9 +64,9 @@ function App() {
       <Route element={ <DefaultLayout /> } >
         <Route path="/" element={ <Questions questions={questions}/> } />
         <Route path="/questions/:questionId" element={ <QuestionDescription questions={questions} /> } >
-          <Route index element={ <Answers answers={answers} voteUp={voteUp} addAnswer={addAnswer} editAnswer={updateAnswer} deleteAnswer={deleteAnswer} /> } />
+          <Route index element={ <Answers /> } />
           <Route path="answers/new" element={ <AnswerForm addAnswer={addAnswer} /> } />
-          <Route path="answers/:answerId/edit" element={ <EditAnswerForm answers={answers} editAnswer={updateAnswer} /> } />
+          <Route path="answers/:answerId/edit" element={ <EditAnswerForm editAnswer={updateAnswer} /> } />
           {/* con location.state
           <Route path="answers/:answerId/edit" element={ <EditAnswerForm editAnswer={updateAnswer} /> } /> */}
         </Route>

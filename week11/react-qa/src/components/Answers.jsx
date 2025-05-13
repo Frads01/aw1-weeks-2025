@@ -1,9 +1,39 @@
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { Row, Col, Table, Button } from "react-bootstrap";
-import { useState } from "react";
-import { Link } from "react-router";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router";
+import API from "../API/API.mjs";
+import { Answer } from "../models/QAModels.mjs";
 
-function Answers (props) {
+function Answers () {
+  const [answers, setAnswers] = useState([]);
+
+  const { questionId } = useParams();
+
+  useEffect(() => {
+    const getAnswers = async () => {
+      const answers = await API.getAnswers(questionId);
+      setAnswers(answers);
+    }
+    getAnswers();
+  }, []);
+
+  const voteUp = (answerId) => {
+    setAnswers(oldAnswers => {
+      return oldAnswers.map(ans => {
+        if(ans.id === answerId)
+          return new Answer(ans.id, ans.text, ans.email, ans.userId, ans.date, ans.score +1);
+        else
+          return ans;
+      });
+    });
+  }
+
+  const deleteAnswer = (answerId) => {
+    setAnswers(oldAnswers => {
+      return oldAnswers.filter((answer) => answer.id !== answerId); 
+    });
+  }
 
   return(
     <>
@@ -12,7 +42,7 @@ function Answers (props) {
     </Row>
     <Row>
       <Col lg={10} className="mx-auto">
-        <AnswerTable answers={props.answers} voteUp={props.voteUp} deleteAnswer={props.deleteAnswer} />
+        <AnswerTable answers={answers} voteUp={voteUp} deleteAnswer={deleteAnswer} />
         <Link className="btn btn-primary" to="answers/new">Add</Link>
       </Col>
     </Row>

@@ -3,6 +3,7 @@ import express from 'express';
 import morgan from 'morgan';
 import {check, validationResult} from 'express-validator';
 import {listQuestions, getQuestion, listAnswersOf, addAnswer, updateAnswer, voteAnswer} from './dao.mjs';
+import cors from 'cors';
 
 // init
 const app = express();
@@ -11,6 +12,13 @@ const port = 3001;
 // middleware
 app.use(express.json());
 app.use(morgan('dev'));
+
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  optionsSuccessState: 200
+};
+
+app.use(cors(corsOptions));
 
 /* ROUTES */
 
